@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Gens
+Comment=Gens is a win32/unix Sega Genesis / Sega CD / Sega 32X emulator
+Exec=gens
+Icon=gens
+Terminal=false
+Type=Application
+Categories=Game;Emulator;
+

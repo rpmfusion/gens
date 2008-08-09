@@ -1,0 +1,14 @@
+diff -dur gens-2.15.2/src/gens/util/file/rom.c gens-2.15.2-romsdir/src/gens/util/file/rom.c
+--- gens-2.15.2/src/gens/util/file/rom.c	2008-06-20 00:33:13.000000000 +0200
++++ gens-2.15.2-romsdir/src/gens/util/file/rom.c	2008-07-27 15:00:04.000000000 +0200
+@@ -411,6 +411,9 @@
+   widget = create_file_chooser_dialog ("Open Rom", GTK_FILE_CHOOSER_ACTION_OPEN);
+   gtk_file_chooser_set_filename (GTK_FILE_CHOOSER(widget), Rom_Dir);
+   addRomsFilter (widget);
++  
++  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (widget), Rom_Dir);
++  
+   res = gtk_dialog_run (GTK_DIALOG (widget));
+   if (res == GTK_RESPONSE_OK)
+     {
+Only in gens-2.15.2-romsdir/src/gens/util/file: rom.c.orig
