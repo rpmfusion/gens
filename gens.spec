@@ -1,6 +1,6 @@
 Summary: Gens is a win32/unix Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
-Version: 2.15.2
+Version: 2.15.3
 Release: 1%{?dist}
 License: GPLv2
 Group: Applications/Emulators
@@ -19,6 +19,9 @@ BuildRequires: libglade2-devel
 BuildRequires: nasm >= 0.98.37
 BuildRequires: ImageMagick
 BuildRequires: desktop-file-utils
+# Autoconf and automake required from v2.15.3
+BuildRequires: autoconf
+BuildRequires: automake
 Requires: hicolor-icon-theme
  
 %description
@@ -41,6 +44,12 @@ iconv --from=ISO-8859-1 --to=UTF-8 gens.txt > gens.txt.utf8
 mv gens.txt.utf8 gens.txt
 
 %build
+# Autoconf and automake required from v2.15.3
+aclocal
+autoheader
+autoconf
+automake -Wno-portability
+#autoconf
 %configure
 make %{?_smp_mflags}
 
@@ -85,6 +94,9 @@ fi
 %doc AUTHORS BUGS COPYING gens.txt history.txt README
 
 %changelog
+* Sun Aug 23 2008 Andrea Musuruane <musuruan@gmail.com> 2.15.3-1
+- updated to upstream 2.15.3
+
 * Sat Aug 09 2008 Andrea Musuruane <musuruan@gmail.com> 2.15.2-1
 - updated to upstream 2.15.2
 - added a patch not to require an executable stack
