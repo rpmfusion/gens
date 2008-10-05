@@ -1,6 +1,6 @@
 Summary: Gens is a win32/unix Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
-Version: 2.15.4
+Version: 2.15.5
 Release: 1%{?dist}
 License: GPLv2
 Group: Applications/Emulators
@@ -85,6 +85,9 @@ fi
 %doc AUTHORS BUGS COPYING gens.txt history.txt README
 
 %changelog
+* Sun Oct 05 2008 Andrea Musuruane <musuruan@gmail.com> 2.15.5-1
+- updated to upstream 2.15.5
+
 * Tue Sep 02 2008 Andrea Musuruane <musuruan@gmail.com> 2.15.4-1
 - updated to upstream 2.15.4
 
