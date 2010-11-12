@@ -1,22 +1,18 @@
 Summary: Gens is a win32/unix Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2
 Group: Applications/Emulators
-URL: http://www.gens.ws/
-Source0:  http://dl.sf.net/%{name}/%{name}-%{version}.tar.gz
+URL: http://www.gens.me/
+Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1: gens.desktop
 Patch0: gens-2.15.2-romsdir.patch
 Patch1: gens-2.15.2-execstack.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
-# This is to build only for i386/i586 on plague
+# This is to build only for ix86 on plague
 #ExclusiveArch: %{ix86}
-%if 0%{?fedora} >= 11
-ExclusiveArch: i586
-%else
-ExclusiveArch: i386
-%endif
+ExclusiveArch: i686
 BuildRequires: gtk2-devel >= 2.4.0
 BuildRequires: SDL-devel >= 1.1.3
 BuildRequires: libglade2-devel
@@ -89,6 +85,10 @@ fi
 %doc AUTHORS BUGS COPYING gens.txt history.txt README
 
 %changelog
+* Thu Nov 11 2010 Andrea Musuruane <musuruan@gmail.com> 2.15.5-3
+- updated upstream URL
+- fixed Source0 according to packaging guidelines
+
 * Sat Mar 28 2009 Andrea Musuruane <musuruan@gmail.com> 2.15.5-2
 - fixed ExclusiveArch for F11
 
