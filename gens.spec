@@ -1,17 +1,31 @@
-Summary: Gens is a win32/unix Sega Genesis / Sega CD / Sega 32X emulator
+Summary: A Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: GPLv2
 Group: Applications/Emulators
 URL: http://www.gens.me/
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1: gens.desktop
+# Gentoo
+# https://bugs.gentoo.org/show_bug.cgi?id=153593
 Patch0: gens-2.15.2-romsdir.patch
-Patch1: gens-2.15.2-execstack.patch
+# https://bugs.gentoo.org/show_bug.cgi?id=340665
+# https://sourceforge.net/tracker/?func=detail&aid=3097146&group_id=73619&atid=538344
+Patch1: gens-2.15.5-ovflfix.patch
+# https://bugs.gentoo.org/show_bug.cgi?id=247350
+Patch2: gens-2.15.5-as-needed.patch
+# Andrea Musuruane
+Patch3: gens-2.15.2-execstack.patch
+# GetDeb
+# https://bugs.launchpad.net/getdeb.net/+bug/561819
+Patch4: gens-2.15.5-spelling.patch
+# Mandriva
+Patch5: gens-2.15.5-strings.patch
+# OpenSUSE
+Patch6: gens-2.15.5-rpmlint.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 # This is to build only for ix86 on plague
-#ExclusiveArch: %{ix86}
 ExclusiveArch: i686
 BuildRequires: gtk2-devel >= 2.4.0
 BuildRequires: SDL-devel >= 1.1.3
@@ -22,13 +36,18 @@ BuildRequires: desktop-file-utils
 Requires: hicolor-icon-theme
  
 %description
-Gens is a GPL emulator for the genesis, ported from win32
-to BeOS and linux. It was the fastest on win32, and is pretty fast on linux.
+Gens is a GPL emulator for the genesis, ported from win32 to BeOS and Linux. 
+It was the fastest on win32, and is pretty fast on Linux.
 
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+%patch1 -p0
+%patch2 -p0
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p0
 
 # Fix line encoding
 sed -i 's/\r//' gens.txt
@@ -64,16 +83,16 @@ convert -delete 0 pixmaps/Gens2.ico \
 rm -rf %{buildroot}
 
 %post
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
 %defattr(-,root,root)
@@ -85,6 +104,15 @@ fi
 %doc AUTHORS BUGS COPYING gens.txt history.txt README
 
 %changelog
+* Sun Mar 18 2012 Andrea Musuruane <musuruan@gmail.com> 2.15.5-5
+- added patches from various distributions
+- updated icon cache scriptlet according to packaging guidelines
+- fixed summary not to repeat package name
+- fixed spelling in summary
+
+* Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 2.15.5-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Thu Nov 11 2010 Andrea Musuruane <musuruan@gmail.com> 2.15.5-3
 - updated upstream URL
 - fixed Source0 according to packaging guidelines

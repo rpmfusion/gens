@@ -1,0 +1,23 @@
+--- src/gens/emulator/ui_proxy.c
++++ src/gens/emulator/ui_proxy.c
+@@ -183,7 +183,8 @@
+ 	// if( (Old_Rend==NORMAL && Num==DOUBLE)||(Old_Rend==DOUBLE && Num==NORMAL) ||Opengl)
+ 	// this doesn't cover hq2x etc. properly. Let's just always refresh.
+ 	Refresh_video();
+-	 
++	
++	return 0;
+ }
+ 
+ int
+--- src/gens/sdllayer/g_sdlsound.c
++++ src/gens/sdllayer/g_sdlsound.c
+@@ -178,7 +178,7 @@
+ 	lpDSBuffer->GetCurrentPosition(&R, NULL);
+ 	return(R / (Seg_Lenght * Bytes_Per_Unit));
+ 	*/
+-	
++	return 0;
+ }
+ 
+ int Lots_In_Audio_Buffer(void)
