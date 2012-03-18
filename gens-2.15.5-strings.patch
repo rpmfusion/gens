@@ -1,0 +1,32 @@
+diff -urN gens-2.15.5/src/gens/emulator/g_main.c gens-2.15.5-patched/src/gens/emulator/g_main.c
+--- gens-2.15.5/src/gens/emulator/g_main.c	2008-09-02 08:17:54.000000000 +1100
++++ gens-2.15.5-patched/src/gens/emulator/g_main.c	2011-07-19 19:52:27.783127529 +1100
+@@ -776,24 +776,24 @@
+ {
+   if (SDL_InitSubSystem (SDL_INIT_TIMER) < 0)
+     {
+-      fprintf (stderr, SDL_GetError ());
++      fprintf (stderr, "%s", SDL_GetError ());
+       return 0;
+     }
+   if (SDL_InitSubSystem (SDL_INIT_VIDEO) < 0)
+     {
+-      fprintf (stderr, SDL_GetError ());
++      fprintf (stderr, "%s", SDL_GetError ());
+       return 0;
+     }
+   /* Take it back down now that we know it works. */
+   SDL_QuitSubSystem (SDL_INIT_VIDEO);
+   if (SDL_InitSubSystem (SDL_INIT_JOYSTICK) < 0)
+     {
+-      fprintf (stderr, SDL_GetError ());
++      fprintf (stderr, "%s", SDL_GetError ());
+       return 0;
+     }
+   if (SDL_InitSubSystem (SDL_INIT_CDROM) < 0)
+     {
+-      fprintf (stderr, SDL_GetError ());
++      fprintf (stderr, "%s", SDL_GetError ());
+       return 0;
+     }
+ 
