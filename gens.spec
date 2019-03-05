@@ -27,6 +27,8 @@ Patch6: gens-2.15.5-rpmlint.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 # This is to build only for ix86 on plague
 ExclusiveArch: i686
+
+BuildRequires: gcc-c++
 BuildRequires: gtk2-devel >= 2.4.0
 BuildRequires: SDL-devel >= 1.1.3
 BuildRequires: libglade2-devel
