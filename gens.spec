@@ -3,7 +3,7 @@
 Summary: A Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 18%{?dist}
+Release: 19%{?dist}
 License: GPLv2
 Group: Applications/Emulators
 URL: http://www.gens.me/
@@ -108,6 +108,9 @@ fi
 %doc AUTHORS BUGS COPYING gens.txt history.txt README
 
 %changelog
+* Wed Aug 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.15.5-19
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Thu Feb 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.15.5-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
