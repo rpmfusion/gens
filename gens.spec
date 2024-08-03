@@ -45,13 +45,13 @@ It was the fastest on win32, and is pretty fast on Linux.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p0
-%patch2 -p0
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p0
+%patch -P0 -p1
+%patch -P1 -p0
+%patch -P2 -p0
+%patch -P3 -p1
+%patch -P4 -p1
+%patch -P5 -p1
+%patch -P6 -p0
 
 # Fix line encoding
 sed -i 's/\r//' gens.txt
