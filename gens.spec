@@ -3,7 +3,7 @@
 Summary: A Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 24%{?dist}
+Release: 25%{?dist}
 License: GPLv2
 Group: Applications/Emulators
 URL: http://www.gens.me/
@@ -26,6 +26,8 @@ Patch4: gens-2.15.5-spelling.patch
 Patch5: gens-2.15.5-strings.patch
 # OpenSUSE
 Patch6: gens-2.15.5-rpmlint.patch
+# Fix gcc -Werror=incompatible-pointer-types
+Patch7: gens-2.15.5-pointer-types.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 # This is to build only for ix86 on plague
 ExclusiveArch: i686
@@ -52,6 +54,7 @@ It was the fastest on win32, and is pretty fast on Linux.
 %patch -P4 -p1
 %patch -P5 -p1
 %patch -P6 -p0
+%patch -P7 -p1
 
 # Fix line encoding
 sed -i 's/\r//' gens.txt
@@ -108,6 +111,9 @@ fi
 %doc AUTHORS BUGS COPYING gens.txt history.txt README
 
 %changelog
+* Fri Oct 25 2024 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.15.5-25
+- Fix FTBFS with gcc14 -Werror=incompatible-pointer-types
+
 * Fri Aug 02 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.15.5-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 

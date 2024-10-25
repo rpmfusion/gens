@@ -1,0 +1,66 @@
+diff -urp '--exclude=*~' gens-2.15.5.orig/src/gens/gtkui/glade/callbacks.c gens-2.15.5/src/gens/gtkui/glade/callbacks.c
+--- gens-2.15.5.orig/src/gens/gtkui/glade/callbacks.c	2008-10-06 00:39:02.000000000 +0900
++++ gens-2.15.5/src/gens/gtkui/glade/callbacks.c	2024-10-25 12:31:34.118000763 +0900
+@@ -1613,7 +1613,7 @@ on_buttonokcd_clicked			(GtkButton
+ 	{
+ 		strcpy(CDROM_DEV, testo);
+ 	}
+-	k = gtk_combo_box_get_active (comboscatola);
++	k = gtk_combo_box_get_active (GTK_COMBO_BOX(comboscatola));
+ 	CDROM_SPEED = vettore[k];
+ 
+ 	cdrw = lookup_widget(GTK_WIDGET(button), "cdrom_window");
+diff -urp '--exclude=*~' gens-2.15.5.orig/src/gens/segacd/cd_aspi.c gens-2.15.5/src/gens/segacd/cd_aspi.c
+--- gens-2.15.5.orig/src/gens/segacd/cd_aspi.c	2008-06-20 07:31:34.000000000 +0900
++++ gens-2.15.5/src/gens/segacd/cd_aspi.c	2024-10-25 13:05:34.596455588 +0900
+@@ -53,7 +53,8 @@ LBA2MSF (int lba)
+ 
+ DWORD (*Get_ASPI_Info) (void);
+ DWORD (*Get_ASPI_Version) (void);
+-DWORD (*Send_ASPI_Command) (LPSRB);
++/* The actual definition of LPSRB is not used below, so far */
++DWORD (*Send_ASPI_Command) (/*LPSRB*/ void *);
+ int ASPI_Command_Running;
+ int CDROM_SPEED;
+ int Num_CD_Drive;
+diff -urp '--exclude=*~' gens-2.15.5.orig/src/gens/util/file/rom.c gens-2.15.5/src/gens/util/file/rom.c
+--- gens-2.15.5.orig/src/gens/util/file/rom.c	2024-10-25 12:18:46.865954500 +0900
++++ gens-2.15.5/src/gens/util/file/rom.c	2024-10-25 12:28:10.586253741 +0900
+@@ -169,6 +169,7 @@ int
+ Detect_Format (char *Name)
+ {
+   FILE *f;
++  gzFile gf;
+   unzFile zf;
+   unz_file_info zinf;
+   struct chd *cf;
+@@ -224,11 +225,11 @@ Detect_Format (char *Name)
+     }
+   else if (!strcasecmp (".gz", &Name[strlen (Name) - 3]))
+     {
+-      f = (FILE *) gzopen (Name, "rb");
+-      if (f == NULL)
++      gf = gzopen (Name, "rb");
++      if (gf == Z_NULL)
+ 	return -1;
+-      gzread (f, buf, 1024);
+-      gzclose (f);
++      gzread (gf, buf, 1024);
++      gzclose (gf);
+     }
+   else if (!strcasecmp (".chd", &Name[strlen (Name) -4]))
+     {
+@@ -588,11 +589,11 @@ Load_Rom (char *Name, int inter)
+ Rom *
+ Load_Rom_Gz (char *Name, int inter)
+ {
+-  FILE *Rom_File;
++  gzFile Rom_File;
+   int Size = 0;
+   char *read_buf[1024];
+   //SetCurrentDirectory (Gens_Path);
+-  if ((Rom_File = (FILE *) gzopen (Name, "rb")) == 0)
++  if ((Rom_File = gzopen (Name, "rb")) == Z_NULL)
+     {
+ 	  printf("No genesis or 32X roms file found in gzip");
+       open_msgbox ("No genesis or 32X roms file found in gzip");
