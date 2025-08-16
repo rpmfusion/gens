@@ -3,9 +3,8 @@
 Summary: A Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 27%{?dist}
+Release: 28%{?dist}
 License: GPLv2
-Group: Applications/Emulators
 URL: http://www.gens.me/
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1: gens.desktop
@@ -28,11 +27,14 @@ Patch5: gens-2.15.5-strings.patch
 Patch6: gens-2.15.5-rpmlint.patch
 # Fix gcc -Werror=incompatible-pointer-types
 Patch7: gens-2.15.5-pointer-types.patch
+# Fix FTBFS with gcc15
+Patch8: gens-2.15.5-gcc15.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 # This is to build only for ix86 on plague
 ExclusiveArch: i686
 
 BuildRequires: gcc-c++
+BuildRequires: make
 BuildRequires: gtk2-devel >= 2.4.0
 BuildRequires: SDL-devel >= 1.1.3
 BuildRequires: libglade2-devel
@@ -55,6 +57,7 @@ It was the fastest on win32, and is pretty fast on Linux.
 %patch -P5 -p1
 %patch -P6 -p0
 %patch -P7 -p1
+%patch -P8 -p1
 
 # Fix line encoding
 sed -i 's/\r//' gens.txt
@@ -66,51 +69,42 @@ mv BUGS.utf8 BUGS
 iconv --from=ISO-8859-1 --to=UTF-8 gens.txt > gens.txt.utf8
 mv gens.txt.utf8 gens.txt
 
+
 %build
 %configure
-make %{?_smp_mflags}
+%make_build
+
 
 %install
-rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+%make_install
 
 # install desktop file and icons
 mkdir -p %{buildroot}%{_datadir}/applications
-desktop-file-install --vendor dribble        \
+desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications \
   %{SOURCE1}
 
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/{16x16,32x32}/apps
-convert -delete 1 pixmaps/Gens2.ico \
+magick convert -delete 1 pixmaps/Gens2.ico \
   %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
-convert -delete 0 pixmaps/Gens2.ico \
+magick convert -delete 0 pixmaps/Gens2.ico \
   %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 
-%clean
-rm -rf %{buildroot}
-
-%post
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files
-%defattr(-,root,root)
 %{_bindir}/gens
 %{_datadir}/gens
-%{_datadir}/applications/dribble-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/16x16/apps/%{name}.png
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-%doc AUTHORS BUGS COPYING gens.txt history.txt README
+%doc AUTHORS BUGS gens.txt history.txt README
+%license COPYING
 
 %changelog
+* Wed Aug 06 2025 Andrea Musuruane <musuruan@gmail.com> - 2.15.5-28
+- Fix FTBFS with gcc15
+- Modernized spec file
+
 * Sun Jul 27 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.15.5-27
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 

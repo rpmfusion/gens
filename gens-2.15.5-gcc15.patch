@@ -1,0 +1,14 @@
+diff -durN gens-2.15.5.orig/src/gens/emulator/ui_proxy.c gens-2.15.5/src/gens/emulator/ui_proxy.c
+--- gens-2.15.5.orig/src/gens/emulator/ui_proxy.c	2007-06-13 11:57:58.000000000 +0200
++++ gens-2.15.5/src/gens/emulator/ui_proxy.c	2025-08-06 10:54:36.351955002 +0200
+@@ -889,9 +889,7 @@
+ 	  else
+ 	  MESSAGE_L ("Vertical Sync Disabled", "Vertical Sync Disabled", 1000)
+ 	    if (Full_Screen)
+-	    return Init_DDraw (640, 480,
+-			       SDL_HWSURFACE | SDL_DOUBLEBUF |
+-			       SDL_FULLSCREEN);
++	    return Init_DDraw (); 
+ 	  else
+ 	    return 1;
+       }
