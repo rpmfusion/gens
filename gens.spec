@@ -3,7 +3,7 @@
 Summary: A Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 29%{?dist}
+Release: 30%{?dist}
 License: GPLv2
 URL: http://www.gens.me/
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -71,6 +71,10 @@ mv gens.txt.utf8 gens.txt
 
 
 %build
+# Work around the following linker error:
+# /usr/bin/ld.bfd: gens_core/gfx/blit.o: warning: relocation in read-only section `.text'
+# /usr/bin/ld.bfd: error: read-only segment has dynamic relocations
+export LDFLAGS+=' -Wl,-z,notext'
 %configure
 %make_build
 
@@ -101,6 +105,9 @@ magick convert -delete 0 pixmaps/Gens2.ico \
 %license COPYING
 
 %changelog
+* Thu Feb 05 2026 Dominik Mierzejewski <dominik@greysector.net> - 2.15.5-30
+- Work around FTBFS with GCC16
+
 * Mon Feb 02 2026 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.15.5-29
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 
