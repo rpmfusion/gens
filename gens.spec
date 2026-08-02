@@ -3,7 +3,7 @@
 Summary: A Sega Genesis / Sega CD / Sega 32X emulator
 Name: gens
 Version: 2.15.5
-Release: 30%{?dist}
+Release: 31%{?dist}
 License: GPLv2
 URL: http://www.gens.me/
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -105,6 +105,9 @@ magick convert -delete 0 pixmaps/Gens2.ico \
 %license COPYING
 
 %changelog
+* Sun Aug 02 2026 RPM Fusion Release Engineering <leigh123linux@rpmfusion.org> - 2.15.5-31
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
+
 * Thu Feb 05 2026 Dominik Mierzejewski <dominik@greysector.net> - 2.15.5-30
 - Work around FTBFS with GCC16
 
